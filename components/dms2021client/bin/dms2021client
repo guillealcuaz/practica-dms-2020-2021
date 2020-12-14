@@ -19,12 +19,16 @@ print("\nAuthentication service up!")
 while True:
     print("Press Ctrl+C to end this process.")
     print("If run as a docker container, press Ctrl+P,Ctrl+Q to detach from the container.")
-    username: str = input('Username: ')
+    username: str = input("Username: ")
     password: str = getpass('Password: ')
     try:
         session_id: str = auth_service.login(username, password)
         print('Logged in successfully as ' + username + ' . Session id: ' + session_id)
         try:
+            inp=input("¿Create new user?(Y/N)")
+            if(inp=="y" or inp=="Y"):
+                if(auth_service.is_running()):
+                    auth_service.create_user(input('Nombre:'), input('Contraseña:'), session_id)
             auth_service.logout(session_id)
             print('Logged out successfully.')
         except UnauthorizedError:

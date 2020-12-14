@@ -101,3 +101,34 @@ class AuthService():
             raise UnauthorizedError()
         if response.status == 500:
             raise HTTPException('Server error')
+
+    def create_user(self, username: str, password: str, session: str) -> str:
+        """ Logs in a user in the authentication server.
+        ---
+        Parameters:
+            - username: The user name string.
+            - password: The user password string.
+        Returns:
+            The session id string.
+        Throws:
+            - InvalidCredentialsError: If the credentials provided are not correct.
+            - HTTPException: On an unhandled 500 error.
+        """
+        form: str = urlencode({'username': username, 'password': password, 'session_id': session})
+        headers: dict = {
+            'Content-type': 'application/x-www-form-urlencoded'
+        }
+        connection: HTTPConnection = self.__get_connection()
+        connection.request('POST', '/users', form, headers)
+        response: HTTPResponse = connection.getresponse()
+        if response.status == 200:
+            print("Usuario creado")
+        if response.status == 400:
+            raise ValueError
+        if response.status == 401:
+            print("El usuario no tiene los privilegios necesarios")
+        if response.status == 409:
+            print("El usuario ya existe")
+        if response.status == 500:
+            raise HTTPException('Server error')
+        return ''
