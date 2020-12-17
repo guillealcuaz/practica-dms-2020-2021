@@ -5,6 +5,7 @@ import json
 from urllib.parse import urlencode
 from http.client import HTTPConnection, HTTPResponse, HTTPException
 from dms2021client.data.rest.exc import InvalidCredentialsError, UnauthorizedError
+from dms2021core.data import UserRightName
 
 
 class AuthService():
@@ -103,15 +104,13 @@ class AuthService():
             raise HTTPException('Server error')
 
     def create_user(self, username: str, password: str, session: str) -> str:
-        """ Logs in a user in the authentication server.
+        """ Creates a user in the authentication server.
         ---
         Parameters:
-            - username: The user name string.
-            - password: The user password string.
-        Returns:
-            The session id string.
+            - username: The name string of the new user.
+            - password: The password string of the new user.
+            - session: The session id of the user creating the new user.
         Throws:
-            - InvalidCredentialsError: If the credentials provided are not correct.
             - HTTPException: On an unhandled 500 error.
         """
         form: str = urlencode({'username': username, 'password': password, 'session_id': session})
@@ -122,13 +121,69 @@ class AuthService():
         connection.request('POST', '/users', form, headers)
         response: HTTPResponse = connection.getresponse()
         if response.status == 200:
-            print("Usuario creado")
+            print("User created")
         if response.status == 400:
             raise ValueError
         if response.status == 401:
-            print("El usuario no tiene los privilegios necesarios")
+            print("You lack the rights to create a user")
         if response.status == 409:
-            print("El usuario ya existe")
+            print("The user already exists")
+        if response.status == 500:
+            raise HTTPException('Server error')
+        return ''
+
+    def grant(self, username: str, right_name: str, session: str) -> str:
+        """ Grants a right to a user in the authentication server.
+        ---
+        Parameters:
+            - username: The name string of the new user.
+            - right_name: The name of the right to be granted.
+            - session: The session id of the user granting the right.
+        Throws:
+            - HTTPException: On an unhandled 500 error.
+        """
+        form: str = urlencode({'session_id': session})
+        headers: dict = {
+            'Content-type': 'application/x-www-form-urlencoded'
+        }
+        address='/users/' + username + '/rights/' + right_name
+        connection: HTTPConnection = self.__get_connection()
+        connection.request('POST', address, form, headers)
+        response: HTTPResponse = connection.getresponse()
+        if response.status == 200:
+            print("Right granted")
+        if response.status == 401:
+            print("Session not found or inssuficient rights")
+        if response.status == 404:
+            print("User not found")
+        if response.status == 500:
+            raise HTTPException('Server error')
+        return ''
+
+    def revoke(self, username: str, right_name: str, session: str) -> str:
+        """ Revokes a right from a user in the authentication server.
+        ---
+        Parameters:
+            - username: The name string of the new user.
+            - right_name: The name of the right to be revoked.
+            - session: The session id of the user granting the right.
+        Throws:
+            - HTTPException: On an unhandled 500 error.
+        """
+        form: str = urlencode({'session_id': session})
+        headers: dict = {
+            'Content-type': 'application/x-www-form-urlencoded'
+        }
+        address='/users/' + username + '/rights/' + right_name
+        connection: HTTPConnection = self.__get_connection()
+        connection.request('DELETE', address, form, headers)
+        response: HTTPResponse = connection.getresponse()
+        if response.status == 200:
+            print("Right revoked")
+        if response.status == 401:
+            print("Session not found or inssuficient rights")
+        if response.status == 404:
+            print("User not found")
         if response.status == 500:
             raise HTTPException('Server error')
         return ''

@@ -5,6 +5,7 @@ from getpass import getpass
 from dms2021client.data.config import ClientConfiguration
 from dms2021client.data.rest import AuthService
 from dms2021client.data.rest.exc import InvalidCredentialsError, UnauthorizedError
+from dms2021core.data import UserRightName
 
 cfg: ClientConfiguration = ClientConfiguration()
 cfg.load_from_file(cfg.default_config_file())
@@ -25,10 +26,37 @@ while True:
         session_id: str = auth_service.login(username, password)
         print('Logged in successfully as ' + username + ' . Session id: ' + session_id)
         try:
-            inp=input("¿Create new user?(Y/N)")
-            if(inp=="y" or inp=="Y"):
+            print("Option Menu:\n",
+            "1.Create user\n",
+            "2.Manage user rights\n",
+            "3.Change sensor rules\n",
+            "4.Show latest monitored values")
+            inp=input("Input the chosen option number: ")
+            if(inp=="1"):
                 if(auth_service.is_running()):
-                    auth_service.create_user(input('Nombre:'), input('Contraseña:'), session_id)
+                    auth_service.create_user(input('New user\'s name: '), input('New user\'s password: '), session_id)
+            if(inp=="2"):
+                if(auth_service.is_running()):
+                    user=input('User\'s name: ')
+                    grantrevoke=input("Grant or Revoke?(G/R):")
+                    print("What rights?:\n",
+                    "1.AdminUsers\n",
+                    "2.AdminRights\n",
+                    "3.AdminSensors\n",
+                    "4.AdminRules\n",
+                    "5.ViewReports")
+                    userright=int(input("Enter the corresponding number:"))
+                    if grantrevoke=="G" or grantrevoke=="g":
+                        auth_service.grant(user, UserRightName(userright).name, session_id)
+                    if grantrevoke=="R" or grantrevoke=="r":
+                        auth_service.revoke(user, UserRightName(userright).name, session_id)
+            if(inp=="3"):
+                if(auth_service.is_running()):
+                    print("Feature not yet implemented")
+            if(inp=="4"):
+                if(auth_service.is_running()):
+                    print("Feature not yet implemented")
+
             auth_service.logout(session_id)
             print('Logged out successfully.')
         except UnauthorizedError:
