@@ -17,7 +17,7 @@ while not auth_service.is_running():
     time.sleep(1)
 print("\nAuthentication service up!")
 
-while True:
+'''while True:
     print("Press Ctrl+C to end this process.")
     print("If run as a docker container, press Ctrl+P,Ctrl+Q to detach from the container.")
     username: str = input("Username: ")
@@ -67,3 +67,8 @@ while True:
         print('Wrong username and/or password. Try again.')
     except Exception as ex:
         print(ex)
+'''
+'''
+menu = Contexto(auth_service)
+menu.start()
+'''
