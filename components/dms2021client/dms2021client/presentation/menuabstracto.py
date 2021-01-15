@@ -1,4 +1,6 @@
-from abc import ABC,abstract method
+from abc import ABC,abstractmethod
+from dms2021client.presentation.contexto import Contexto
+
 
 class MenuAbstracto (ABC): 
 

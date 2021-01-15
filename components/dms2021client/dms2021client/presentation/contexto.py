@@ -1,25 +1,29 @@
-
 from dms2021client.data.rest import AuthService
+from dms2021client.presentation.menuprincipal import MenuPrincipal
+from dms2021client.presentation.menuabstracto import MenuAbstracto
 
 
+class Contexto():
 
-
-class Contexto(auth_service: AuthService):
     estado : MenuAbstracto = MenuPrincipal()
+    auth_service : AuthService = None
     
-    def cambiaEstado(menu: MenuAbstracto) : 
-        this.estado = menu
+    def __init__(self, auth_service: AuthService):
+        self.auth_service = auth_service
+
+    def cambiaEstado(self, menu: MenuAbstracto):
+        self.estado = menu
     
-    def start(): 
+    def start(self):
         while True:
-            this.estado.imprimirEncabezado()
-            this.estado.imprimirOpciones()
-            this.estado.pedirOpcion()
-            this.update()
+            self.estado.imprimirEncabezado()
+            self.estado.imprimirOpciones()
+            self.estado.pedirOpcion()
+            self.update()
 
 
-    def update():
-        this.estado.update(this)
+    def update(self):
+        self.estado.update(self)
                  
 
 
