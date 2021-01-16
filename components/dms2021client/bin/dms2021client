@@ -8,6 +8,8 @@ from dms2021client.data.rest.exc import InvalidCredentialsError, UnauthorizedErr
 from dms2021core.data import UserRightName
 from dms2021client.presentation.contexto import Contexto
 from dms2021client.presentation.menuprincipal import MenuPrincipal
+from dms2021client.presentation.menuautenticacion import MenuAutenticacion
+
 
 cfg: ClientConfiguration = ClientConfiguration()
 cfg.load_from_file(cfg.default_config_file())
@@ -20,7 +22,7 @@ print(input("hola"))
 while not auth_service.is_running():
     time.sleep(1)
 print("\nAuthentication service up!")
-
-menu = Contexto(auth_service, MenuPrincipal())
+primermenu = MenuAutenticacion()
+menu = Contexto(auth_service, primermenu)
 menu.start()
 
