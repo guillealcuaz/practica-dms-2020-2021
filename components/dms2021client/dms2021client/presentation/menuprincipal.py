@@ -20,17 +20,18 @@ class MenuPrincipal (MenuAbstracto):
         """
         docstring
         """
-        print("1.Crear usuario\n",
-            "2.Manejar permisos usuario\n",
-            "3.Cambiar las reglas del sensor\n",
-            "4.Mostrar últimos valores monitorizados\n")
+        print("1.Crear usuario\n"
+            "2.Manejar permisos usuario\n"
+            "3.Cambiar las reglas del sensor\n"
+            "4.Mostrar últimos valores monitorizados\n"
+            "5.Cerrar sesión\n")
 
     
     def pedirOpcion(self):
         """
         docstring
         """
-        self.opcion = str(input("Introduzca el número de la opción elegida: "))
+        self.opcion = int(input("Introduzca el número de la opción elegida: "))
 
     
     def update(self,contexto: Contexto):
@@ -38,12 +39,17 @@ class MenuPrincipal (MenuAbstracto):
         docstring
         """
         
-        menus = [MenuCrearUsuario()]
+        menus = [MenuCrearUsuario(),0,0,0,MenuAutenticacion()]
+        
         try:
+            if self.opcion == 5:
+                sesion = contexto.get_session_id()
+                contexto.get_auth_service().logout(sesion)
+            
             contexto.cambiaEstado(menus[self.opcion-1])
         except IndexError:
-            print("La opción seleccionada no existe\n",
-            "volviendo al menu principal\n")
+            print("\nLa opción seleccionada no existe\n",
+            "Volviendo al menu principal\n")
             contexto.cambiaEstado(MenuPrincipal())
         
 

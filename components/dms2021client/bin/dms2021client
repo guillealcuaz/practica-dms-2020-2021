@@ -22,7 +22,9 @@ print(input("hola"))
 while not auth_service.is_running():
     time.sleep(1)
 print("\nAuthentication service up!")
-primermenu = MenuAutenticacion()
-menu = Contexto(auth_service, primermenu)
+
+menu = Contexto(auth_service, MenuAutenticacion(), MenuPrincipal())
 menu.start()
+
+
 

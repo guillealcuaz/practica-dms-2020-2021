@@ -2,6 +2,13 @@ from abc import ABC,abstractmethod
 from dms2021client.presentation.contexto import Contexto
 class MenuAbstracto (ABC): 
 
+    
+    def start(self, contexto: Contexto):
+        self.imprimirEncabezado()
+        self.imprimirOpciones()
+        self.pedirOpcion()
+        self.update(contexto)
+
     @abstractmethod 
     def imprimirEncabezado(self):
         """

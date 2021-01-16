@@ -1,7 +1,7 @@
 from getpass import getpass
 from dms2021client.presentation.contexto import Contexto
 from dms2021client.presentation.menuabstracto import MenuAbstracto
-from dms2021client.presentation.menuprincipal import MenuPrincipal
+
 
 class MenuCrearUsuario(MenuAbstracto):
 
@@ -38,6 +38,6 @@ class MenuCrearUsuario(MenuAbstracto):
         if respuesta == "s" or respuesta == "S":
             contexto.cambiaEstado(MenuCrearUsuario()) 
         else:
-            contexto.cambiaEstado(MenuPrincipal())
+            contexto.retorno()
         
     
