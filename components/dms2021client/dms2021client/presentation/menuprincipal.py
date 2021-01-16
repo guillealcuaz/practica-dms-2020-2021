@@ -1,6 +1,6 @@
+from getpass import getpass
 from dms2021client.presentation.contexto import Contexto
 from dms2021client.presentation.menuabstracto import MenuAbstracto
-
 
 class MenuPrincipal (MenuAbstracto):
     opcion = 0
@@ -9,22 +9,22 @@ class MenuPrincipal (MenuAbstracto):
         print(":Menu Principal prueba\n")
     
     @staticmethod
-    def imprimirOpciones(self):
+    def imprimirOpciones():
         """
         docstring
         """
         print("1: Opcion 1:\n 2: Opcion 2:  ")
 
     @staticmethod
-    def pedirOpcion(self):
+    def pedirOpcion():
         """
         docstring
         """
-        print(input("Di una palabra: "))
+        print(getpass("Di una palabra: "))
 
     @staticmethod
-    def update(self, contexto: Contexto):
+    def update(contexto: Contexto):
         """
         docstring
         """
-        contexto.cambiaEstado(self)
+        contexto.cambiaEstado(MenuPrincipal())

@@ -1,17 +1,15 @@
 from dms2021client.data.rest import AuthService
-from dms2021client.presentation.menuprincipal import MenuPrincipal
-from dms2021client.presentation.menuabstracto import MenuAbstracto
 
 
 class Contexto():
 
-    estado : MenuAbstracto = MenuPrincipal()
     auth_service : AuthService = None
     
-    def __init__(self, auth_service: AuthService):
+    def __init__(self, auth_service: AuthService, menu):
+        self.estado = menu
         self.auth_service = auth_service
 
-    def cambiaEstado(self, menu: MenuAbstracto):
+    def cambiaEstado(self, menu): #tipar la entrada de menú
         self.estado = menu
     
     def start(self):
