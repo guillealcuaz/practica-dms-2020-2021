@@ -1,14 +1,9 @@
 from getpass import getpass
 from dms2021client.presentation.contexto import Contexto
 from dms2021client.presentation.menuabstracto import MenuAbstracto
-from dms2021client.presentation.menuautenticacion import MenuAutenticacion
-from dms2021client.presentation.menucrearusuario import MenuCrearUsuario
-from dms2021client.presentation.gestionpermisosusuario import GestionPermisosUsuario
-from dms2021client.presentation.mostrarregistros import MostrarRegistros
-from dms2021client.presentation.modificarreglas import ModificarReglas
 
 
-class MenuPrincipal (MenuAbstracto):
+class MostrarRegistros(MenuAbstracto):
     
     def __init__ (self):
         self.opcion = 0
@@ -16,13 +11,14 @@ class MenuPrincipal (MenuAbstracto):
 
     @staticmethod
     def imprimirEncabezado ():
-        print(":Menu Principal \n")
+        print("Mostrar Registros \n")
     
     @staticmethod
     def imprimirOpciones():
         """
         docstring
         """
+        #lo que veamos
         print("1.Crear usuario\n"
             "2.Manejar permisos usuario\n"
             "3.Cambiar las reglas del sensor\n"
@@ -42,7 +38,7 @@ class MenuPrincipal (MenuAbstracto):
         docstring
         """
         
-        menus = [MenuCrearUsuario(),GestionPermisosUsuario(),ModificarReglas(),MostrarRegistros(),MenuAutenticacion()]
+        menus = [MenuCrearUsuario(),0,0,0,MenuAutenticacion()]
         
         try:
             if self.opcion == 5:
