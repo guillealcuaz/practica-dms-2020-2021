@@ -2,8 +2,6 @@ from dms2021client.data.rest import AuthService
 
 
 class Contexto():
-
-    auth_service : AuthService = None
     
     def __init__(self, auth_service: AuthService, menu):
         self.estado = menu
