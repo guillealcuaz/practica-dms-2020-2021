@@ -72,11 +72,3 @@ class SensorConfiguration(Configuration):
 
         return bool(self.get_value('debug'))
 
-    def get_password_salt(self) -> str:
-        """ Gets the password salt configuration value.
-        ---
-        Returns:
-            A string with the salt, or '' if no salt is configured.
-        """
-
-        return str(self.get_value('salt') or '')

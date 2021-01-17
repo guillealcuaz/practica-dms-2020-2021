@@ -5,3 +5,6 @@ debug: true
 auth_service:
   host: '172.10.1.10'
   port: 5000
+rules:
+  route: '/dev/disk/by-label/USB2'
+  period: 1800000
