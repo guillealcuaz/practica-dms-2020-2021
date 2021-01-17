@@ -8,8 +8,8 @@ from dms2021client.presentation.menucrearusuario import MenuCrearUsuario
 class ModificarReglas (MenuAbstracto):
     
     def __init__ (self):
-        self.opcion = 0
-        
+        self.route = "/"
+        self.time = 1000000
 
     @staticmethod
     def imprimirEncabezado ():
@@ -32,25 +32,15 @@ class ModificarReglas (MenuAbstracto):
         """
         docstring
         """
-        self.opcion = int(input("Introduzca el número de la opción elegida: "))
+        self.route = input("Introduzca la ruta elegida: ")
+        self.time = int(input("Introduzca el periodo de monitorización elegido en ms: "))
 
     
     def update(self,contexto: Contexto):
         """
         docstring
-        """
-        
-        menus = [MenuCrearUsuario(),0,0,0,MenuAutenticacion()]
-        
-        try:
-            if self.opcion == 5:
-                sesion = contexto.get_session_id()
-                contexto.get_auth_service().logout(sesion)
-            
-            contexto.cambiaEstado(menus[self.opcion-1])
-        except IndexError:
-            print("\nLa opción seleccionada no existe\n",
-            "Volviendo al menu principal\n")
-            contexto.cambiaEstado(MenuPrincipal())
+        """ 
+        contexto.retorno()
+    
         
 
