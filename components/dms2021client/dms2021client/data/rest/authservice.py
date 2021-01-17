@@ -5,7 +5,7 @@ import json
 from urllib.parse import urlencode
 from http.client import HTTPConnection, HTTPResponse, HTTPException
 from dms2021client.data.rest.exc import InvalidCredentialsError, UnauthorizedError
-from dms2021core.data import UserRightName
+from dms2021core.data.userrightname import UserRightName
 
 
 class AuthService():
@@ -187,3 +187,28 @@ class AuthService():
         if response.status == 500:
             raise HTTPException('Server error')
         return ''
+
+    def has_right(self, username: str, right_name: str) -> bool:
+        """ Checks if a user has an specific right
+        ---
+        Parameters:
+            - username: The name string of the new user.
+            - right_name: The name of the right to be revoked.
+        Throws:
+            - HTTPException: On an unhandled 500 error.
+        """
+        form: str = ''
+        headers: dict = {
+            'Content-type': 'application/x-www-form-urlencoded'
+        }
+        address='/users/' + username + '/rights/' + right_name
+        connection: HTTPConnection = self.__get_connection()
+        connection.request('GET', address, form, headers)
+        response: HTTPResponse = connection.getresponse()
+        if response.status == 200:
+            return True
+        if response.status == 404:
+            return False
+        if response.status == 500:
+            raise HTTPException('Server error')
+        return False

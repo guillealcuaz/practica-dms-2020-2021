@@ -4,6 +4,8 @@
 from dms2021sensor.data.config.sensorconfiguration import SensorConfiguration
 from dms2021sensor.data.db.schema import Schema
 from dms2021sensor.data.db.resultsets.entradas import Entradas
+from dms2021core.data.rest.restresponse import RestResponse
+
 
 class GestorEntradas():
     """ Base class for all logic manager classes.
@@ -84,6 +86,7 @@ class GestorEntradas():
             True if the user exists and the credentials are correct; false otherwise.
         """
         session = self.get_schema().new_session()
-        return Entradas.latest_entries(session)
+        response: RestResponse = RestResponse(str(Entradas.latest_entries(session)), mime_type = 'text/plain')
+        return (response.get_content(), response.get_code(), {'Content-Type': response.get_mime_type()})
 
     

@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 
-import time
+import time, os
+from dms2021sensor.logic.reglas import Reglas
+from dms2021sensor.logic.gestorentradas import GestorEntradas
 
-print("This file is a stub. Replace this behaviour with the actual service code.")
+
+reglas = Reglas.get_instance()
 
 while True:
-    time.sleep(1)
+    existe: bool = os.path.exists(reglas.get_route())
+    hora = int(time.time())
+    GestorEntradas().create_entry(hora, existe)
+    time.sleep(reglas.get_time())

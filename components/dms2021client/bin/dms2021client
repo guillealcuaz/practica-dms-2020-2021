@@ -4,6 +4,7 @@ import time
 from getpass import getpass 
 from dms2021client.data.config import ClientConfiguration
 from dms2021client.data.rest import AuthService
+from dms2021client.data.rest.sensorservice import SensorService
 from dms2021client.data.rest.exc import InvalidCredentialsError, UnauthorizedError
 from dms2021core.data import UserRightName
 from dms2021client.presentation.contexto import Contexto
@@ -14,6 +15,8 @@ from dms2021client.presentation.menuautenticacion import MenuAutenticacion
 cfg: ClientConfiguration = ClientConfiguration()
 cfg.load_from_file(cfg.default_config_file())
 auth_service: AuthService = AuthService(cfg.get_auth_service_host(), cfg.get_auth_service_port())
+sensor1_service: SensorService = SensorService(cfg.get_sensor1_host(), cfg.get_sensor1_port())
+sensor2_service: SensorService = SensorService(cfg.get_sensor2_host(), cfg.get_sensor2_port())
 
 print("This file is a stub. Replace this behaviour with the actual service code.")
 
@@ -23,8 +26,5 @@ while not auth_service.is_running():
     time.sleep(1)
 print("\nAuthentication service up!")
 
-menu = Contexto(auth_service, MenuAutenticacion(), MenuPrincipal())
+menu=Contexto(auth_service, sensor1_service, sensor2_service, MenuAutenticacion(), MenuPrincipal())
 menu.start()
-
-
-

@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+import logging
+from flask import Flask, request
+from flask.logging import default_handler
+
+from dms2021core.data.rest import RestResponse
+from dms2021sensor.data.config.sensorconfiguration import SensorConfiguration
+from dms2021sensor.data.db.schema import Schema
+from dms2021sensor.logic.gestorentradas import GestorEntradas
+from dms2021sensor.logic.reglas import Reglas
+
+app = Flask(__name__)
+root_logger = logging.getLogger()
+root_logger.addHandler(default_handler)
+
+cfg: SensorConfiguration = SensorConfiguration()
+cfg.load_from_file(cfg.default_config_file())
+db: Schema = Schema(cfg)
+gestor_entradas: GestorEntradas = GestorEntradas(cfg, db)
+reglas: Reglas = Reglas.get_instance()
+
+@app.route('/rules', methods=['PATCH'])
+def modify_rules():
+    time: int = request.form['time']
+    route: str = request.form['route']
+    response: RestResponse = reglas.modify_rules(route, time)
+    return (response.get_content(), response.get_code(), {'Content-Type': response.get_mime_type()})
+
+
+@app.route('/entries', methods=['GET'])
+def latest_entries():
+    response: RestResponse = gestor_entradas.latest_entries()
+    return (response.get_content(), response.get_code(), {'Content-Type': response.get_mime_type()})
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    if cfg.get_debug_flag():
+        app.logger.error(str(type(e)))
+        app.logger.error(e)
+    return ('', 500)
+
+
+if __name__ == '__main__':
+    app.run(
+        host=cfg.get_service_host(),
+        port=cfg.get_service_port(),
+        debug=cfg.get_debug_flag()
+    )

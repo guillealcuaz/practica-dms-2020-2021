@@ -37,6 +37,7 @@ class MenuAutenticacion(MenuAbstracto):
         try:
             sesion = contexto.auth_service.login(self.usuario, self.contrasena)
             contexto.set_session_id(sesion)
+            contexto.set_username(self.usuario)
             contexto.retorno()
         except InvalidCredentialsError:
             print("Usuario y/o contraseña incorrecto/s")
