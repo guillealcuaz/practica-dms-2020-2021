@@ -5,3 +5,7 @@ debug: true
 auth_service:
   host: '172.10.1.10'
   port: 5000
+rules:
+  route: ''
+  period: 600000
+  
